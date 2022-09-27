@@ -1,0 +1,2 @@
+rumpic
+機械学習gem rumaleを使った画像処理アプリです。

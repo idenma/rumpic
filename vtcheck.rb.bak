@@ -1,0 +1,13 @@
+require 'RMagick'
+require './VectorTransformation'
+include Magick
+
+files = "./originalimage/colorpic.png"
+colorpic = Image.read(files).first
+puts colorpic
+
+vt = VectorTransformation.new
+puts vt
+
+
+p vt.vector_transformation(colorpic)

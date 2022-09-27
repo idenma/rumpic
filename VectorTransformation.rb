@@ -1,0 +1,60 @@
+require 'RMagick'
+require 'numo/narray'
+include Numo
+
+class VectorTransformation
+#image = Magick::Image
+
+  def rbg_get(x)
+ 
+    r = x.red 
+    g = x.green 
+    b = x.blue 
+	array =[r, g, b]
+	
+	array.sum / 48
+  end
+  
+ def rbgcolor_get(pixelcolor)#arrayは配列
+   colorarray = Int32.new(3)
+ 
+   colorarray = [ pixelcolor.red ,pixelcolor.green ,pixelcolor.blue ]
+   colorarray 
+ end
+
+
+
+  def img_crop(x,y)
+    new_img = image.crop(x, y, 4, 4)
+  end
+
+
+
+  def vector_transformation(files)
+    if files.class != Magick::Image
+	  image = Magick::Image.read(files).first
+	end
+    image_columns = image.columns
+    image_rows = image.rows
+    picx = image_rows * image_columns	
+    pix_col = Int32.new(picx,3).seq + 1
+    pixel_number = 0
+    
+    (0..image_rows - 1).each do |rows|
+      (0..image_columns - 1).each do |columns|
+        insertArray = Int32.new(3)
+	    insertArray = image.export_pixels(columns,rows,columns + 1,rows + 1,map="RGB")
+        (0..2).each {|x| pix_col[pixel_number,x] = insertArray[x]} 
+	    pixel_number = pixel_number.next
+	  end
+    end
+    image.destroy!
+	pix_col#戻り値
+	
+  end
+  
+  
+
+
+end
+	
